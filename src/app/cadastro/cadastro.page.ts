@@ -4,6 +4,8 @@ import { auth } from 'firebase/app'
 import { error } from '@angular/compiler/src/util';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { UserService } from '../upload/user.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -19,10 +21,21 @@ export class CadastroPage implements OnInit {
   constructor( 
     public alert: AlertController, 
     public afAuth: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    public afstore: AngularFirestore,
+    public user: UserService
     ) { }
 
   ngOnInit() {
+  }
+
+  async mostraAlerta(header: string, message: string) {
+    const alert = await this.alert.create({
+      header,
+      message,
+      buttons: ["Ok"]
+    })
+    await alert.present()
   }
 
   async cadastro() {
@@ -33,7 +46,15 @@ export class CadastroPage implements OnInit {
     
     try {
       const res = await this.afAuth.auth.createUserWithEmailAndPassword(username, password)
-      console.log(res)
+      this.afstore.doc('usuarios/${res.user.uid}').set({
+        username
+      })
+
+      this.user.setUser({
+        username,
+        uid: res.user.uid
+      })
+
       this.mostraAlerta("Sucesso","Sua conta foi cadastrada!")
       this.router.navigate(['/tabs'])
 
@@ -43,13 +64,6 @@ export class CadastroPage implements OnInit {
     } 
   }
 
-  async mostraAlerta(header: string, message: string) {
-    const alert = await this.alert.create({
-      header,
-      message,
-      buttons: ["Ok"]
-    })
 
-    await alert.present()
-  }
+    
 }

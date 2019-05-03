@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { UserService } from './user.service';
+import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-upload',
@@ -9,9 +12,26 @@ import { Http } from '@angular/http';
 export class UploadPage implements OnInit {
 
   imageURL: string
-  constructor(public http: Http) { }
+  descricao: string
+
+  constructor(
+    public http: Http,
+    public afstore: AngularFirestore,
+    public user: UserService
+    ) { }
 
   ngOnInit() {
+  }
+
+  criarPost() {
+    const image = this.imageURL
+    const descricao = this.descricao
+
+    this.afstore.doc('usuarios/${this.user.getUID()}').update({
+      posts: firestore.FieldValue.arrayUnion({
+        image, descricao
+      })
+    })
   }
 
   fileChanged(event) {
