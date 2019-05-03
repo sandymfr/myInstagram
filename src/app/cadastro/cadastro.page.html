@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Cadastro</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <ion-list>
+  
+      <ion-item>
+        <ion-label position="floating">e-mail</ion-label>
+        <ion-input type="text" [(ngModel)]="username"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="floating">senha</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label position="floating">confirme a senha</ion-label>
+          <ion-input type="password" [(ngModel)]="confirmP"></ion-input>
+        </ion-item>
+
+    </ion-list>
+  
+    <ion-button fill="solid" size="small" expand="full" color="light" (click)="cadastro()">Cadastrar</ion-button>
+  
+  </ion-content>
+  
