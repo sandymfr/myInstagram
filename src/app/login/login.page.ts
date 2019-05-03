@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { auth } from 'firebase/app'
-import { UserService } from '../upload/user.service';
+import { UserService } from '../user.service';
 import { Router } from '@angular/router'
 
 @Component({
@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
   async login() {
     const { username, password } = this
     try {
-      const res = await this.afAuth.auth.signInWithEmailAndPassword(username, password)
+      const res = await this.afAuth.auth.signInWithEmailAndPassword(username + '@ifal.com.br', password)
 
       if(res.user) {
         this.user.setUser({
@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
     } catch(err) {
       console.dir(err);
       if(err.code === "auth/user-not-found") {
-        console.log("Usuário não encontrado")
+        console.log("Usuário não encontrado!")
       }
     }
   }

@@ -12,7 +12,7 @@ import firebaseConfig from './firebaseconfig'
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth'
 import { HttpModule } from '@angular/http';
-import { UserService } from './upload/user.service';
+import { UserService } from './user.service';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({

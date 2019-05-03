@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { UserService } from './user.service';
+import { UserService } from '../user.service';
 import { firestore } from 'firebase';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
@@ -14,24 +16,33 @@ export class UploadPage implements OnInit {
   imageURL: string
   descricao: string
 
+  @ViewChild('fileButton') fileButton
+
   constructor(
     public http: Http,
     public afstore: AngularFirestore,
-    public user: UserService
+    public user: UserService,
+    private alert: AlertController,
+    private router: Router
     ) { }
 
   ngOnInit() {
   }
 
   criarPost() {
-    const image = this.imageURL
+    const imagem = this.imageURL
     const descricao = this.descricao
 
-    this.afstore.doc('usuarios/${this.user.getUID()}').update({
+    this.afstore.doc(`usuarios/${this.user.getUID()}`).update({
       posts: firestore.FieldValue.arrayUnion({
-        image, descricao
+        imagem, 
+        descricao
       })
     })
+  }
+
+  fazUpload() {
+    this.fileButton.nativeElement.click()
   }
 
   fileChanged(event) {
@@ -42,11 +53,12 @@ export class UploadPage implements OnInit {
     data.append('UPLOADCARE_STORE', '1')
     data.append('UPLOADCARE_PUB_KEY', 'b007e583346ec80d17c4')
 
-    this.http.post('https://upload.uploadcare.com/base/', data)
-    .subscribe(event => {
+    this.http.post('https://upload.uploadcare.com/base/', data).subscribe(event => {
       console.log(event)
       this.imageURL = event.json().file
     })
   }
+
+
 
 }

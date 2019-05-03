@@ -5,7 +5,7 @@ import { error } from '@angular/compiler/src/util';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { UserService } from '../upload/user.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -45,8 +45,8 @@ export class CadastroPage implements OnInit {
     }
     
     try {
-      const res = await this.afAuth.auth.createUserWithEmailAndPassword(username, password)
-      this.afstore.doc('usuarios/${res.user.uid}').set({
+      const res = await this.afAuth.auth.createUserWithEmailAndPassword(username + '@ifal.com.br', password)
+      this.afstore.doc(`usuarios/${res.user.uid}`).set({
         username
       })
 
